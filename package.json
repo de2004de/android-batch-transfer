@@ -1,0 +1,43 @@
+{
+  "name": "main-App",
+  "version": "3.0.0",
+  "main": "electron/main.js",
+  "devDependencies": {
+    "electron": "^43.1.1",
+    "electron-builder": "^26.15.3"
+  },
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "file-burner",
+    "productName": "File Burner",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/file-transfer.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "installerIcon": "assets/file-transfer.ico",
+      "uninstallerIcon": "assets/file-transfer.ico",
+      "uninstallDisplayName": "File Burner-Uninstaller",
+      "license": "license.md",
+      "allowToChangeInstallationDirectory": false
+    }
+  },
+  "dependencies": {
+    "adbkit": "^2.11.1",
+    "node-mtp": "^0.3.18"
+  }
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>File Burner</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-brand">
+      <svg class="app-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M16 7h.01"/>
+        <path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v9a2 2 0 0 0 2 2z"/>
+        <path d="M8 11h.01"/>
+        <path d="M16 11h.01"/>
+        <path d="M12 15h.01"/>
+      </svg>
+      <span class="app-title">File Burner</span>
+      <span id="connection-state" class="connection-pill connection-pill-idle">
+        <span class="connection-dot" aria-hidden="true"></span>
+        <span class="connection-label">ADB idle</span>
+      </span>
+    </div>
+    <div class="header-right">
+      <button id="theme-toggle" class="icon-btn theme-toggle" aria-label="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+      </svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="app-body">
+    <aside id="left" class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-header">
+          <h3 class="sidebar-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12" y2="18"/>
+            </svg>
+            Devices
+            <span id="device-count" class="sidebar-title-count" aria-label="Connected devices">0</span>
+          </h3>
+        </div>
+
+        <div class="devices-header-row">
+          <div class="devices-header-actions">
+            <button id="refresh" class="icon-btn" aria-label="Refresh devices" title="Refresh devices">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="23 4 23 10 17 10"/>
+                <polyline points="1 20 1 14 7 14"/>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/>
+                <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"/>
+              </svg>
+            </button>
+            <button id="multi-toggle" class="btn btn-ghost">Multi-select: Off</button>
+            <button id="rename-device" class="btn btn-ghost">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+              </svg>
+              Rename
+            </button>
+          </div>
+        </div>
+
+        <div id="rename-row" class="rename-row">
+          <input id="rename-input" type="text" placeholder="New device name" />
+          <button id="apply-rename" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Apply
+          </button>
+        </div>
+
+        <div id="device-container" class="device-container">
+          <div id="device-list" class="device-list">
+            <div class="device-empty">Click Refresh to detect devices</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main id="right" class="main-area">
+      <div class="workspace">
+        <div class="left-column">
+          <section class="panel source-panel">
+            <div class="panel-header">
+              <h3 class="panel-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                </svg>
+                Source
+              </h3>
+            </div>
+            <div class="toolbar">
+              <div class="toolbar-row">
+                <div class="toolbar-group toolbar-group-main">
+                  <button id="pick" class="btn btn-ghost">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    Pick Source Folder
+                  </button>
+                </div>
+                <button id="start" class="btn btn-primary">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                  </svg>
+                  Start Copy
+                </button>
+              </div>
+            </div>
+            <div id="folder" class="folder-label">No folder selected</div>
+          </section>
+
+          <section class="panel destination-panel">
+            <div class="panel-header">
+              <h3 class="panel-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Destination Folder
+              </h3>
+              <span class="panel-hint">Select one device to load folders</span>
+            </div>
+            <div id="folder-tree" class="folder-tree">
+              <div class="tree-empty">Select one device to load its folders</div>
+            </div>
+          </section>
+        </div>
+
+        <div class="right-stack">
+            <div class="right-stack-scroll">
+              <section class="panel progress-panel" id="progress-panel" hidden>
+                <div id="progress-list" class="progress-list"></div>
+              </section>
+            </div>
+
+            <section class="panel log-panel" id="log-panel">
+              <div class="panel-header">
+                <h3 class="panel-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="4 17 10 11 4 5"/>
+                    <line x1="12" y1="19" x2="20" y2="19"/>
+                  </svg>
+                  Activity Log
+                </h3>
+                <div class="log-panel-actions">
+                  <button id="toggle-log" class="btn btn-ghost" aria-label="Collapse log">
+                    <svg class="icon-collapse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                    <svg class="icon-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polyline points="6 15 12 9 18 15"/>
+                    </svg>
+                    <span class="log-toggle-label">Collapse</span>
+                  </button>
+                  <button id="clear-log" class="btn btn-ghost">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polyline points="3 6 5 6 21 6"/>
+                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                      <path d="M10 11v6"/>
+                      <path d="M14 11v6"/>
+                      <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                    Clear
+                  </button>
+                </div>
+              </div>
+              <div id="log" class="log"></div>
+            </section>
+          </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

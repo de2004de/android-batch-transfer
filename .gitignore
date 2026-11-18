@@ -1,0 +1,25 @@
+# Installed dependencies and generated installers
+node_modules/
+dist/
+out/
+coverage/
+*.log
+
+# Install Android SDK Platform-Tools separately and add it to PATH
+platform-tools/
+
+# Local settings and secrets
+.claude/
+.codex/
+.idea/
+.vscode/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+.DS_Store
+Thumbs.db
+Desktop.ini
